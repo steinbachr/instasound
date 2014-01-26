@@ -30,6 +30,9 @@ class Controller():
             
         return urls
 
+    def get_8tracks_songs(self):
+        API_KEY = '7fe2e057bb81abf2248a06ecab027b8dc09e01d3.'
+
     def play_songs(self, song_urls):
         logging.info('getting ready to play the tracks')
         if self.media:
