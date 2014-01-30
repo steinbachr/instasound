@@ -3,7 +3,7 @@ import logging
 from Tkinter import *
 from PIL import Image, ImageTk
 from lib import vlc
-from submodules.eight_py.eight_py import Api
+from eight_py import Api
 import pdb
 
 
