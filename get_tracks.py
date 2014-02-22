@@ -47,7 +47,7 @@ class Controller():
                 logging.info('adding streamable url for track {name} with url {url}'.format(name=track.title.encode('utf-8'),  url=track.stream_url.encode('utf-8')))
                 url_to_play = '{url}?consumer_key={key}'.format(url=track.stream_url, key=CLIENT_ID)
                 self.add_track_info(track.title)
-            urls.append(url_to_play)
+                urls.append(url_to_play)
             
         return urls
 
@@ -59,16 +59,21 @@ class Controller():
         logging.info('getting tracks from 8tracks')
         API_KEY = '7fe2e057bb81abf2248a06ecab027b8dc09e01d3'        
         self.info_var.set('\n\n Now playing 8Tracks Songs: \n')
+        filter_val = self.filter_var.get()
 
         api = Api(api_key=API_KEY)
-        mixes = api.get_mixes(num_results=1)
+        mixes = api.get_mixes_by_keyword(filter_val, num_results=1) if filter_val else api.get_mixes(num_results=1)
         track = api.start_playback(mixes[0])        
 
         urls = []
         while not track['done']:
             urls.append(track['stream_url'])
             self.add_track_info('{name} by {performer}'.format(name=track['name'], performer=track['performer']))
-            track = api.next_song()            
+            track = api.next_song()
+            # if we were unable to fetch the track, re-query the api till we get one
+            if not track:
+                while not track:
+                    track = api.next_song()
         logging.info('got track {track}'.format(track=track))
 
         return urls 
@@ -114,7 +119,7 @@ class Window():
 
         top = Tk() 
         self.setup_widgets(top)       
-        top.mainloop() 
+        top.mainloop()
 
     def setup_widgets(self, window):    
         ##--< Frames >--##
@@ -156,6 +161,10 @@ class Window():
 
         next_button = Button(top_frame, text="Next", command=self.controller.next)
         next_button.grid(row=1, column=3)
+
+        filter_type = Radiobutton(top_frame)
+        filter_type.grid(row=2, column=2)
+        filter_type.grid_forget()
 
         filter_string_var = StringVar()
         filter_button = Button(top_frame, text="Filter", command=lambda: self.controller.play_songs())
