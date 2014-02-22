@@ -7,6 +7,7 @@ import pdb
 EIGHT_TRACKS = "8Tracks"
 SOUNDCLOUD = "Soundcloud"
 
+
 class Controller():
     def __init__(self):
         self.media_source = SOUNDCLOUD
@@ -19,21 +20,28 @@ class Controller():
         """
         get songs from soundcloud
         @param filter_val - if given, filter the songs by this term
-        @return a list of the urls to the mp3's for the soundcloud songs
+        @return an array of track dictionaries containing url, title, and artist for the retrieved songs
         """
         CLIENT_ID = '7d365fefd91122c615f4ebbe66f512b1'
         client = soundcloud.Client(client_id=CLIENT_ID)
 
         logging.info('getting tracks from soundcloud')
-        tracks = client.get('/tracks', q=filter_val, limit=10) if filter_val else client.get('/tracks', limit=20)
-        urls = []        
+        tracks = client.get('/tracks', q=filter_val, filter='streamable', limit=10) if filter_val else client.get('/tracks', filter='streamable', limit=20)
+        normalized_tracks = []
         for track in tracks:
             if track.streamable:
-                logging.info('adding streamable url for track {name} with url {url}'.format(name=track.title.encode('utf-8'),  url=track.stream_url.encode('utf-8')))
+                title = track.title.encode('utf-8')
                 url_to_play = '{url}?consumer_key={key}'.format(url=track.stream_url, key=CLIENT_ID)
-                urls.append(url_to_play)
+                logging.info('adding streamable url for track {name} with url {url}'.format(name=track.title.encode('utf-8'),  url=track.stream_url.encode('utf-8')))
+
+                normalized_tracks.append({
+                    'mp3': url_to_play,
+                    'title': title,
+                    'artist': 'soundcloud',
+                    'poster': track.artwork_url
+                })
             
-        return urls
+        return normalized_tracks
 
     def get_8tracks_songs(self, filter_val=None):
         """

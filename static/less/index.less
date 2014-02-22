@@ -1,7 +1,46 @@
+/*****-----< Mixins >-----*****/
+.grayscale(@amount) {
+  -webkit-filter: grayscale(@amount);
+  -moz-filter: grayscale(@amount);
+  -ms-filter: grayscale(@amount);
+  -o-filter: grayscale(@amount);
+  filter: grayscale(@amount);
+  filter: url(grayscale.svg); /* Firefox 4+ */
+  filter: gray; /* IE 6-9 */
+}
+
+.varela_font {
+    font-family: 'Varela Round', sans-serif;
+}
+
+/*****-----< Colors >-----*****/
+@orange: #fca905;
+@dark-gray: #494744;
+@light-gray: #ccc;
+@dark-turquoise: #2180a5;
+
 body {
-    h1 { color:blue;
-        a {
-            color:red;
+    .media_source { position:fixed; top:0; text-align:center; border-bottom:solid 2px @light-gray; height:45px; z-index:2; background:white; width:100%;
+        nav { .varela_font;
+            span { font-size:20px; color:@dark-gray; padding:5px 20px 0px 40px; display:inline-block; height:40px; margin-left:20px; cursor:pointer;
+                &.soundcloud { background:url('../images/soundcloud_i.png') no-repeat; background-position:4% 20%; background-size:auto 32px; }
+                &.eight { background:url('../images/8tracks_i.png') no-repeat; background-position:left middle; background-size:auto 32px; }
+                &.selected { background-color:@orange; color:white; }
+            }
         }
+    }
+    .outer_player_container { padding-left:200px; margin-top:120px;
+        .jp-audio { position:relative;
+            .jp-playlist { background-color:white !important;
+                ul { padding:0px !important; }
+                a { color:@dark-gray; text-decoration:none; }
+                .jp-playlist-current { background:@orange; font-weight:bold;
+                    a { color:white; }
+                }
+            }
+        }
+    }
+    .filters { border-radius:5px; border:solid 2px @light-gray; position:fixed; right:0; top:120px; height:600px; width:500px;
+        h2 { text-align:center; }
     }
 }
