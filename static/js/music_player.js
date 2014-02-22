@@ -29,7 +29,7 @@ player = {
     */
     playSongs: function(songs) {
         this.playlist.setPlaylist(songs);
-//        this.playlist.play(0);
+        this.playlist.play(0);
     }
 
 };

@@ -12,6 +12,9 @@
 .varela_font {
     font-family: 'Varela Round', sans-serif;
 }
+.gafata_font {
+    font-family: 'Gafata', sans-serif;
+}
 
 /*****-----< Colors >-----*****/
 @orange: #fca905;
@@ -40,7 +43,10 @@ body {
             }
         }
     }
-    .filters { border-radius:5px; border:solid 2px @light-gray; position:fixed; right:0; top:120px; height:600px; width:500px;
-        h2 { text-align:center; }
+    .filters { border-radius:5px; border:solid 2px @light-gray; position:fixed; right:0; top:120px; height:500px; width:500px; margin-right:50px; .gafata_font; text-align:center;
+        .filter_row { font-size:20px;
+           input { height:50px; width:300px; font-size:25px; }
+        }
+        h2 { .varela_font; margin-bottom:100px; }
     }
 }

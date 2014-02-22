@@ -3,6 +3,8 @@
 <head>
     <title>Music Hub Of The Universe</title>
     <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Gafata' rel='stylesheet' type='text/css'>
+
     <link rel="stylesheet/less" type="text/css" href="../static/less/index.less" />
     <link type="text/css" href="../static/player_skin/jplayer.blue.monday.css" rel="stylesheet" />
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -66,11 +68,26 @@
             </div>
         </div>
     </div>
-    <div class="filters">
-        <h2>Define Filters Here</h2>
+    <div class="filters soundcloud-filters">
+        <h2>Filter Soundcloud Results</h2>
         <div class="filter_row">
-            <input type="text" />
+            <input type="text" class="filter_val" placeholder="Search Soundcloud" />
+        </div>
+        <div class="filter_row">
+            <button class="apply_filters">Search</button>
         </div>
     </div>
+
+{#    <div class="eight-filters">#}
+{#        <h2>Define Filters Here</h2>#}
+{#        <div class="filter_row">#}
+{#            <select>#}
+{#                <option></option>#}
+{#            </select>#}
+{#        </div>#}
+{#        <div class="filter_row">#}
+{#            <input type="text" />#}
+{#        </div>#}
+{#    </div>#}
 </body>
 </html>
