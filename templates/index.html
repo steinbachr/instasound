@@ -7,6 +7,8 @@
 
     <link rel="stylesheet/less" type="text/css" href="../static/less/index.less" />
     <link type="text/css" href="../static/player_skin/jplayer.blue.monday.css" rel="stylesheet" />
+    <link type="text/css" href="../static/less/flat-ui.css" rel="stylesheet" />
+
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../static/js/jplayer.playlist.js"></script>
     <script type="text/javascript" src="../static/js/jquery.jplayer.min.js"></script>
@@ -17,8 +19,8 @@
 <body>
     <div class="media_source">
         <nav>
-            <span class="nav_item eight">8Tracks</span>
-            <span class="nav_item soundcloud selected">Soundcloud</span>
+            <span class="nav_item eight" data-media-source="8tracks">8Tracks</span>
+            <span class="nav_item soundcloud selected" data-media-source="soundcloud">Soundcloud</span>
         </nav>
     </div>
     <div id="jquery_jplayer_1" class="jp-jplayer"></div>
@@ -69,12 +71,12 @@
         </div>
     </div>
     <div class="filters soundcloud-filters">
-        <h2>Filter Soundcloud Results</h2>
+        <h3>Filter Soundcloud Results</h3>
         <div class="filter_row">
             <input type="text" class="filter_val" placeholder="Search Soundcloud" />
         </div>
         <div class="filter_row">
-            <button class="apply_filters">Search</button>
+            <button class="apply_filters btn btn-block btn-lg btn-success">Search</button>
         </div>
     </div>
 

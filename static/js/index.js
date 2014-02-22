@@ -1,5 +1,6 @@
 var page = {
     soundcloudUrl: '/play-soundcloud',
+    mediaSource: 'soundcloud',
 
     init: function() {
         player.init("#jquery_jplayer_1", {}, false);
@@ -15,6 +16,7 @@ var page = {
         $('.nav_item').click(function() {
             $('.nav_item').removeClass('selected');
             $(this).addClass('selected');
+            this.mediaSource = $(this).data('mediaSource');
         });
 
         $('.apply_filters').click(function() {

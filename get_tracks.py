@@ -43,16 +43,15 @@ class Controller():
             
         return normalized_tracks
 
-    def get_8tracks_songs(self, filter_val=None):
+    def get_8tracks_song(self, api, filter_val=None):
         """
         get a song from 8tracks (since we cant just get a bunch of songs at once like we can for soundcloud)
+        @param api - the api key
         @param filter_val - the value to filter song results by
-        @return a list of song urls to stream
+        @return a song url to stream
         """
         logging.info('getting tracks from 8tracks')
-        API_KEY = '7fe2e057bb81abf2248a06ecab027b8dc09e01d3'        
 
-        api = Api(api_key=API_KEY)
         mixes = api.get_mixes_by_keyword(filter_val, num_results=1) if filter_val else api.get_mixes(num_results=1)
         track = api.start_playback(mixes[0])        
 
@@ -67,14 +66,6 @@ class Controller():
         logging.info('got track {track}'.format(track=track))
 
         return urls
-
-    def next(self):
-        logging.info('going to next track')
-        self.media_player.next()
-
-    def previous(self):
-        logging.info('going to next track')
-        self.media_player.previous()
 
     def download(self):
         pass

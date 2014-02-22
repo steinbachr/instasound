@@ -1,3 +1,4 @@
 Flask==0.10
 soundcloud==0.4.1
+pyLast
 gunicorn==0.17.2
