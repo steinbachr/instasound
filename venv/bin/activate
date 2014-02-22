@@ -39,7 +39,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/bobby/Documents/projects/SmallProjects/instasound/venv"
+VIRTUAL_ENV="/Users/Bobby/Documents/Projects/SmallProjects/Instasound/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
