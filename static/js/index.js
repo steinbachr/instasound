@@ -49,6 +49,13 @@ var page = {
         $(this.errorCont).html(compiled);
     },
 
+    /*
+    clear error message
+     */
+    _clearErrorMsg: function() {
+        $(this.errorCont).html('');
+    },
+
     init: function() {
         player.init(this.jPlayer, {}, false);
 
@@ -87,6 +94,7 @@ var page = {
 
         $(this.filterCont).on('click', '.download', function() {
             var songUrl = $('.jp-playlist-current').find('a[data-download-url]').data('downloadUrl');
+            _this._clearErrorMsg();
 
             if (songUrl) {
                 window.location = _this.downloadUrl + "?song=" + songUrl;
@@ -97,7 +105,7 @@ var page = {
 
         $(this.filterCont).on('click', '.apply_filters', function() {
             var filterVal = $(this).closest('.filters').find('input').val();
-            $(_this.errorCont).html('');
+            _this._clearErrorMsg();
 
             switch (_this.mediaSource) {
                 case 'soundcloud':
