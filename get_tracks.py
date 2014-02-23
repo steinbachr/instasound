@@ -78,17 +78,25 @@ class Controller():
             track = self.eight_api.next_song()
             self.eight_api.report_song_play(track['id'])
 
-        if not track:
-            while not track:
-                track = self.eight_api.next_song()
+        while not track:
+            track = self.eight_api.next_song()
         logging.info('got track {track}'.format(track=track))
+
+        # try to get a version of the song for download from soundcloud
+        download_url = ''
+        soundcloud_matches = self.soundcloud_api.get('/tracks', q='{name} {artist}'.format(name=track['name'], artist=track['performer']),
+                                                     filter='downloadable')
+        for download_track in soundcloud_matches:
+            if download_track.downloadable:
+                download_url = download_track.download_url
+                break
 
         return {
             'mp3': track['stream_url'],
             'title': track['name'],
             'artist': track['performer'],
             'poster': '',
-            'downloadUrl': ''
+            'downloadUrl': download_url
         }
 
     def download(self, download_url):

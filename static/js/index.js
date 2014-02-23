@@ -1,7 +1,7 @@
 var page = {
     jPlayer: "#jquery_jplayer_1",
     filterCont: '.filters',
-    errorCont: '.error_container',
+    msgCont: '.msg_container',
 
     soundcloudUrl: '/play-soundcloud',
     eightTracksUrl: '/play-8tracks',
@@ -46,14 +46,25 @@ var page = {
         var tpl = _.template($('#error_tpl').html()),
             compiled = tpl(error);
 
-        $(this.errorCont).html(compiled);
+        $(this.msgCont).html(compiled);
+    },
+
+    /*
+    compile the warning message when apropriate
+    @param warning - the warning object
+     */
+    _compileWarningMsg: function(warning) {
+        var tpl = _.template($('#warning_tpl').html()),
+            compiled = tpl(warning);
+
+        $(this.msgCont).html(compiled);
     },
 
     /*
     clear error message
      */
     _clearErrorMsg: function() {
-        $(this.errorCont).html('');
+        $(this.msgCont).html('');
     },
 
     init: function() {
@@ -97,6 +108,7 @@ var page = {
             _this._clearErrorMsg();
 
             if (songUrl) {
+                _this.mediaSource == '8tracks' && _this._compileWarningMsg({warning: "downloaded files from 8tracks might not match correctly"});
                 window.location = _this.downloadUrl + "?song=" + songUrl;
             } else {
                 _this._compileErrorMsg({error: 'Sorry, this track isn\'t downloadable'});

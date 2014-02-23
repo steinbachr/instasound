@@ -32,8 +32,11 @@ def play_8tracks_songs():
 @app.route('/download')
 def download_song():
     song_url = request.args.get('song')
-    return Response(controller.download(song_url).content, mimetype='audio/mpeg', content_type='application/download', headers={
-        'Content-Disposition': 'attachment; filename=download.mp3'
+    download_resp = controller.download(song_url)
+    resp_headers = download_resp.headers
+
+    return Response(download_resp.content, content_type=resp_headers['content-type'], headers={
+        'Content-Disposition': resp_headers['content-disposition']
     })
 
 

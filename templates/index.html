@@ -8,6 +8,7 @@
     <link type="text/css" href="../static/player_skin/jplayer.blue.monday.css" rel="stylesheet" />
     <link type="text/css" href="../static/less/flat-ui.css" rel="stylesheet" />
     <link type="text/css" href="../static/less/fancySelect.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../static/less/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet/less" type="text/css" href="../static/less/index.less" />
 
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -16,7 +17,6 @@
     <script type="text/javascript" src="../static/js/vendor/less-1.6.3.min.js"></script>
     <script type="text/javascript" src="../static/js/vendor/underscore-min.js"></script>
     <script type="text/javascript" src="../static/js/vendor/fancySelect.js"></script>
-    <script type="text/javascript" src="../static/js/vendor/jquery.fileDownload.js"></script>
     <script type="text/javascript" src="../static/js/music_player.js"></script>
     <script type="text/javascript" src="../static/js/index.js"></script>
 </head>
@@ -78,6 +78,7 @@
         </div>
     </div>
 
+    <!-- The filter Box -->
     <script type="text/template" id="filter_tpl">
         <h3>Filter <%= mediaName %> Results</h3>
         <% if (mediaSource === '8tracks') { %>
@@ -94,16 +95,20 @@
         </div>
         <div class="filter_row">
             <button class="apply_filters btn btn-block btn-lg btn-success">Search</button>
-            <% if (mediaSource != '8tracks') { %>
             <button class="download btn btn-block btn-lg btn-inverse">Download</button>
-            <% } %>
         </div>
-        <div class="filter_row error_container">
+        <div class="filter_row msg_container">
         </div>
     </script>
 
+    <!-- The Error Msg -->
     <script type="text/template" id="error_tpl">
         <div class="error"><span class="fui-cross"></span><%= error %></div>
+    </script>
+
+    <!-- The Warning Msg -->
+    <script type="text/template" id="warning_tpl">
+        <div class="warning"><i class="fa fa-info-circle"></i><%= warning %></div>
     </script>
 </body>
 </html>
