@@ -1,6 +1,7 @@
 var page = {
     jPlayer: "#jquery_jplayer_1",
     filterCont: '.filters',
+    errorCont: '.error_container',
 
     soundcloudUrl: '/play-soundcloud',
     eightTracksUrl: '/play-8tracks',
@@ -44,7 +45,7 @@ var page = {
         var tpl = _.template($('#error_tpl').html()),
             compiled = tpl(error);
 
-        $('.error_container').html(compiled);
+        $(this.errorCont).html(compiled);
     },
 
     init: function() {
@@ -85,6 +86,7 @@ var page = {
 
         $(this.filterCont).on('click', '.apply_filters', function() {
             var filterVal = $(this).closest('.filters').find('input').val();
+            $(_this.errorCont).html('');
 
             switch (_this.mediaSource) {
                 case 'soundcloud':
