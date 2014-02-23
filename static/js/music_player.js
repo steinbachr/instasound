@@ -30,6 +30,15 @@ player = {
     playSongs: function(songs) {
         this.playlist.setPlaylist(songs);
         this.playlist.play(0);
-    }
+    },
 
+
+    /*
+    add a song to this player's playlist
+    @param song - the song to add (has same structure as a single song in playSongs above)
+    @param playNow - if true, play the song when its added
+     */
+    addSong: function(song, playNow) {
+        this.playlist.add(song, playNow);
+    }
 };

@@ -9,8 +9,9 @@ SOUNDCLOUD = "Soundcloud"
 
 
 class Controller():
-    def __init__(self):
+    def __init__(self, eight_api):
         self.media_source = SOUNDCLOUD
+        self.eight_api = eight_api
         logging.basicConfig(level=logging.DEBUG, format='%(levelname)s:%(message)s')
 
     def set_media_source(self, new_source):
@@ -43,29 +44,48 @@ class Controller():
             
         return normalized_tracks
 
-    def get_8tracks_song(self, api, filter_val=None):
+    def get_8tracks_song(self, filter_type=None, filter_val=None, starting_playback=True):
         """
         get a song from 8tracks (since we cant just get a bunch of songs at once like we can for soundcloud)
-        @param api - the api key
+        @param filter_type - the type of filter to apply (keyword, artist, tag)
         @param filter_val - the value to filter song results by
-        @return a song url to stream
+        @param starting_playback - if true, it means that we're starting playback of a mix, false means were going to next
+                    track in the mix.
+        @return a track to stream (unless no mixes exist with the given filters, in which case we return None)
         """
         logging.info('getting tracks from 8tracks')
 
-        mixes = api.get_mixes_by_keyword(filter_val, num_results=1) if filter_val else api.get_mixes(num_results=1)
-        track = api.start_playback(mixes[0])        
+        if starting_playback:
+            #if there's a type, there's a value
+            if filter_type:
+                if filter_type.lower() == 'keyword':
+                    mixes = self.eight_api.get_mixes_by_keyword(filter_val, num_results=1)
+                elif filter_type.lower() == 'artist':
+                    mixes = self.eight_api.get_mixes_by_artist(filter_val, num_results=1)
+                else:
+                    mixes = self.eight_api.get_mixes_by_tag(filter_val, num_results=1)
+            else:
+                mixes = self.eight_api.get_mixes(num_results=1)
 
-        urls = []
-        while not track['done']:
-            urls.append(track['stream_url'])
-            track = api.next_song()
-            # if we were unable to fetch the track, re-query the api till we get one
-            if not track:
-                while not track:
-                    track = api.next_song()
+            if mixes:
+                track = self.eight_api.start_playback(mixes[0])
+            else:
+                return None
+        else:
+            track = self.eight_api.next_song()
+            self.eight_api.report_song_play(track['id'])
+
+        if not track:
+            while not track:
+                track = self.eight_api.next_song()
         logging.info('got track {track}'.format(track=track))
 
-        return urls
+        return {
+            'mp3': track['stream_url'],
+            'title': track['name'],
+            'artist': track['performer'],
+            'poster': ''
+        }
 
     def download(self):
         pass

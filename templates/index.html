@@ -5,14 +5,17 @@
     <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Gafata' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet/less" type="text/css" href="../static/less/index.less" />
     <link type="text/css" href="../static/player_skin/jplayer.blue.monday.css" rel="stylesheet" />
     <link type="text/css" href="../static/less/flat-ui.css" rel="stylesheet" />
+    <link type="text/css" href="../static/less/fancySelect.css" rel="stylesheet" />
+    <link rel="stylesheet/less" type="text/css" href="../static/less/index.less" />
 
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="../static/js/jplayer.playlist.js"></script>
-    <script type="text/javascript" src="../static/js/jquery.jplayer.min.js"></script>
-    <script type="text/javascript" src="../static/js/less-1.6.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/vendor/jplayer.playlist.js"></script>
+    <script type="text/javascript" src="../static/js/vendor/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="../static/js/vendor/less-1.6.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/vendor/underscore-min.js"></script>
+    <script type="text/javascript" src="../static/js/vendor/fancySelect.js"></script>
     <script type="text/javascript" src="../static/js/music_player.js"></script>
     <script type="text/javascript" src="../static/js/index.js"></script>
 </head>
@@ -70,26 +73,33 @@
             </div>
         </div>
     </div>
-    <div class="filters soundcloud-filters">
-        <h3>Filter Soundcloud Results</h3>
+    <div class="filters">
+        <!-- JS goes here -->
+    </div>
+
+    <script type="text/template" id="filter_tpl">
+        <h3>Filter <%= mediaName %> Results</h3>
+        <% if (mediaSource === '8tracks') { %>
         <div class="filter_row">
-            <input type="text" class="filter_val" placeholder="Search Soundcloud" />
+            <select>
+	            <option>Artist</option>
+	            <option>Tag</option>
+	            <option>Keyword</option>
+            </select>
+        </div>
+        <% } %>
+        <div class="filter_row">
+            <input type="text" class="filter_val" placeholder="Search <%= mediaName %>" />
         </div>
         <div class="filter_row">
             <button class="apply_filters btn btn-block btn-lg btn-success">Search</button>
         </div>
-    </div>
+        <div class="filter_row error_container">
+        </div>
+    </script>
 
-{#    <div class="eight-filters">#}
-{#        <h2>Define Filters Here</h2>#}
-{#        <div class="filter_row">#}
-{#            <select>#}
-{#                <option></option>#}
-{#            </select>#}
-{#        </div>#}
-{#        <div class="filter_row">#}
-{#            <input type="text" />#}
-{#        </div>#}
-{#    </div>#}
+    <script type="text/template" id="error_tpl">
+        <div class="error"><span class="fui-cross"></span><%= error %></div>
+    </script>
 </body>
 </html>

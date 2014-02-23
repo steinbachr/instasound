@@ -29,23 +29,25 @@ class MixSet():
         self.headers = headers
         self.play_token = play_token
 
+        self.started_playing = False
         self.play_url = 'http://8tracks.com/sets/{token}/play.json?mix_id={mix_id}'.format(token=play_token, mix_id=mix.id)
         self.next_url = 'http://8tracks.com/sets/{token}/next.json?mix_id={mix_id}'.format(token=play_token, mix_id=mix.id)
         self.skip_url = 'http://8tracks.com/sets/{token}/skip.json?mix_id={mix_id}'.format(token=play_token, mix_id=mix.id)
 
-    def get_stream_data(self, first_time=True):
+    def get_stream_data(self):
         """
         get the data for streaming this Set's mix
-        @param first_time - called when first starting playback of the mix
         @return dictionary containing track information, url, and whether skipping is allowed
         """
-        logging.info('getting play url {url} now...'.format(url=self.play_url if first_time else self.next_url))
-        response = requests.get(self.play_url if first_time else self.next_url, headers=self.headers)
+        logging.info('getting play url {url} now...'.format(url=self.play_url if not self.started_playing else self.next_url))
+        response = requests.get(self.play_url if not self.started_playing else self.next_url, headers=self.headers)
+        self.started_playing = True
         parsed = response.json()
         mix_set = parsed['set']
         track = mix_set['track']
 
         result = {
+            'id': track['id'],
             'stream_url': track['track_file_stream_url'],
             'name': track['name'],
             'performer': track['performer'],
@@ -156,7 +158,17 @@ class Api():
         @return same thing as start_playback except for the next track
         """
         logging.info("going to next song in the set")
-        return self.current_set.get_stream_data(first_time=False)
+        return self.current_set.get_stream_data()
 
+    def report_song_play(self, track_id):
+        """
+        report the play of a song in the current mix
+        @param track_id - the id of the track to report
+        """
+        report_url = 'http://8tracks.com/sets/{token}/report.json?track_id={track_id}&mix_id={mix_id}'.format(token=self.play_token,
+                                                                                                              track_id=track_id,
+                                                                                                              mix_id=self.current_set.mix.id)
+        logging.info("reporting the track to url {url}".format(url=report_url))
+        requests.post(report_url)
 
 
