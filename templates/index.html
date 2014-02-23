@@ -26,6 +26,9 @@
             <span class="nav_item soundcloud selected" data-media-source="soundcloud">Soundcloud</span>
         </nav>
     </div>
+    <div class="filters">
+        <!-- JS goes here -->
+    </div>
     <div id="jquery_jplayer_1" class="jp-jplayer"></div>
     <div class="outer_player_container">
         <div id="jp_container_1" class="jp-audio">
@@ -73,9 +76,6 @@
             </div>
         </div>
     </div>
-    <div class="filters">
-        <!-- JS goes here -->
-    </div>
 
     <script type="text/template" id="filter_tpl">
         <h3>Filter <%= mediaName %> Results</h3>
@@ -93,6 +93,7 @@
         </div>
         <div class="filter_row">
             <button class="apply_filters btn btn-block btn-lg btn-success">Search</button>
+            <button class="download btn btn-block btn-lg btn-success">Download</button>
         </div>
         <div class="filter_row error_container">
         </div>
