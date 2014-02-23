@@ -5,6 +5,7 @@ var page = {
 
     soundcloudUrl: '/play-soundcloud',
     eightTracksUrl: '/play-8tracks',
+    downloadUrl: '/download',
 
     mediaSource: 'soundcloud',
     mediaNameMap: {
@@ -81,6 +82,16 @@ var page = {
                     break;
                 default:
                     break;
+            }
+        });
+
+        $(this.filterCont).on('click', '.download', function() {
+            var songUrl = $('.jp-playlist-current').find('a[data-download-url]').data('downloadUrl');
+
+            if (songUrl) {
+                window.location = _this.downloadUrl + "?song=" + songUrl;
+            } else {
+                _this._compileErrorMsg({error: 'Sorry, this track isn\'t downloadable'});
             }
         });
 

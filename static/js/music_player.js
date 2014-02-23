@@ -24,7 +24,8 @@ player = {
      title: '',
      artist: '',
      mp3: '',
-     poster: ''
+     poster: '',
+     downloadUrl: ''
      }
     */
     playSongs: function(songs) {

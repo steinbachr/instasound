@@ -1,6 +1,8 @@
 import get_tracks as gt
 from eight_py import Api
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response, make_response
+import pdb
+import urllib
 
 app = Flask(__name__)
 
@@ -26,6 +28,13 @@ def play_8tracks_songs():
 
     song = controller.get_8tracks_song(filter_type=filt_type, filter_val=filt_val, starting_playback=first_track)
     return jsonify(song=song) if song else jsonify(error='No songs found with given filters')
+
+@app.route('/download')
+def download_song():
+    song_url = request.args.get('song')
+    return Response(controller.download(song_url).content, mimetype='audio/mpeg', content_type='application/download', headers={
+        'Content-Disposition': 'attachment; filename=download.mp3'
+    })
 
 
 if __name__ == '__main__':

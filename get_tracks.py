@@ -2,16 +2,21 @@ import soundcloud
 import logging
 from eight_py import Api
 import pdb
+import requests
 
 
 EIGHT_TRACKS = "8Tracks"
 SOUNDCLOUD = "Soundcloud"
+
+SOUNDCLOUD_CLIENT_ID = '7d365fefd91122c615f4ebbe66f512b1'
 
 
 class Controller():
     def __init__(self, eight_api):
         self.media_source = SOUNDCLOUD
         self.eight_api = eight_api
+        self.soundcloud_api = soundcloud.Client(client_id=SOUNDCLOUD_CLIENT_ID)
+
         logging.basicConfig(level=logging.DEBUG, format='%(levelname)s:%(message)s')
 
     def set_media_source(self, new_source):
@@ -23,23 +28,21 @@ class Controller():
         @param filter_val - if given, filter the songs by this term
         @return an array of track dictionaries containing url, title, and artist for the retrieved songs
         """
-        CLIENT_ID = '7d365fefd91122c615f4ebbe66f512b1'
-        client = soundcloud.Client(client_id=CLIENT_ID)
-
         logging.info('getting tracks from soundcloud')
-        tracks = client.get('/tracks', q=filter_val, filter='streamable', limit=10) if filter_val else client.get('/tracks', filter='streamable', limit=20)
+        tracks = self.soundcloud_api.get('/tracks', q=filter_val, filter='streamable', limit=10) if filter_val else self.soundcloud_api.get('/tracks', filter='streamable', limit=20)
         normalized_tracks = []
         for track in tracks:
             if track.streamable:
                 title = track.title.encode('utf-8')
-                url_to_play = '{url}?consumer_key={key}'.format(url=track.stream_url, key=CLIENT_ID)
+                url_to_play = '{url}?consumer_key={key}'.format(url=track.stream_url, key=SOUNDCLOUD_CLIENT_ID)
                 logging.info('adding streamable url for track {name} with url {url}'.format(name=track.title.encode('utf-8'),  url=track.stream_url.encode('utf-8')))
 
                 normalized_tracks.append({
                     'mp3': url_to_play,
                     'title': title,
                     'artist': 'soundcloud',
-                    'poster': track.artwork_url
+                    'poster': track.artwork_url,
+                    'downloadUrl': track.download_url if track.downloadable else ''
                 })
             
         return normalized_tracks
@@ -84,8 +87,15 @@ class Controller():
             'mp3': track['stream_url'],
             'title': track['name'],
             'artist': track['performer'],
-            'poster': ''
+            'poster': '',
+            'downloadUrl': ''
         }
 
-    def download(self):
-        pass
+    def download(self, download_url):
+        """
+        return a request object containing the data retrieved by accessing the download url for the track
+        @param download_url - the url for downloading a track
+        @return request response object
+        """
+        url = '{track_url}?client_id={c_id}'.format(track_url=download_url, c_id=SOUNDCLOUD_CLIENT_ID)
+        return requests.get(url)
